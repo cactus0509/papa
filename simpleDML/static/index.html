@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>爬爬</title>
+
+<style type="text/css">
+li {
+	list-style-type: none;
+}
+
+html, body {
+	height: 100%;
+	font-size: 18px;
+	line-height: 200%;
+}
+</style>
+</head>
+<body>
+	<form name="scrapy" action="/scrapy" method="POST">
+		<div style="border: 1px solid #cccccc; width: 100%; background: #fff;">
+			<ul
+				style="margin-top: 30px; background: #FCFCFC; border: 1px; list-style: none;">
+				<li>1. 要爬取的第一页（下方有分页）列表：</li>
+				<li><textarea rows="5" cols="128" name="first_page_url">https://www.guahao.com/hospital/areahospitals?sort=region_sort&c=%E4%B8%8D%E9%99%90&ht=1&hk=all&o=all&hl=all&ipIsShanghai=false&fg=0&q=&p=%E5%8C%97%E4%BA%AC&ci=all&pi=1&pageNo={1}
+		       </textarea> (使用{1}代替 第“1”页 )</li>
+				<li>2. 第一行特征文字： <input name="first_title"
+					value="中国人民解放军总医院301医院" size=32 />
+				</li>
+				<li>3. 详细页面连接文字（第一行特征文字的连接） ：</li>
+				<li><input name="first_link_title" value="中国人民解放军总医院301医院" size=32 /></li>
+				<li>4.爬多少页:</li>
+				<li><input name="pages" value="3" size=4 /></li>
+				<li>5.本次任务命个名:</li>
+				<li><input name="job_name" value="job001" size=32 /></li>
+				<li><input type="submit" value="开始PAPA!"></li>
+				</li>
+			</ul>
+		</div>
+	</form>
+</html>
+

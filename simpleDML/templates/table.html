@@ -1,0 +1,64 @@
+$def with (th_data,search_column)
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <title> 
+        </title>   
+ 
+        <link rel="stylesheet" type="text/css" href="/static/css/default.css"> 
+    </head>
+    <body>
+ 
+$if search_column:
+         <div style="margin:25px;">
+                        <h4>$search_column["table_name_cn"]</h4>
+         </div>
+ 
+         <form  name="updateForm" action="/edit" method="POST"> 
+                        <div style="border:1px solid #cccccc;width:100%;background:#fff;" > 
+                                   <ul  style="margin-top:30px;background:#FCFCFC;border: 1px; list-style:none; line-height:300%;">  
+                                   		<li> <input type="submit" value="提 交" /> </li>
+                                        $if th_data:
+                                           $for line in th_data: 
+                                                            $if line["type"] in ["varchar","int","date"]:
+                                                    		    <li>
+                                                    		       $if "pic_show" in line and line["pic_show"]:
+                                                    				    <img src="$line["value"]" width="96" height="96">
+                                                    				
+                                                            	   $line["column_cn"] :
+                                                                   <input  type="input"  name='$line["column"]'  value='$line["value"]'  size='$line["size"]'  />
+                                                                   $line["note"]
+                                                                </li>
+                                                            $elif line["type"]=="textarea":
+                                                                <li>
+                                                            	   $line["column_cn"] :
+                                                                </li>
+                                                                <li>   
+                                                                    <textarea name="$line["column"]" style="width:60%; margin:25px;height:300px;">$line["value"]</textarea> 
+                                                                    $line["note"]
+                                                                 </li>
+                                                            $elif  line["type"]=="radio": 
+                                                                   <li>
+                                                                   $line["column_cn"] :
+	                                                            	   $for redio_line in line["select_value"]:
+	                                                                   		&nbsp; &nbsp;$redio_line["name"]
+	                                                                   		$if line["value"] == redio_line["value"]:
+	                                                                   			<input name="$line["column"]" type="radio" value="$redio_line["value"]"  checked="true" />
+	                                                                   		$else:
+	                                                                   			<input name="$line["column"]" type="radio" value="$redio_line["value"]"  />
+	                                                             		$line["note"]
+                                                                   	</li>
+                                                              
+                                                    
+                                     <li>
+                                         <input type="hidden" name="action" value="$search_column["action"]" />
+                                         <input type="hidden" name="table_name" value="$search_column["table_name"]" />
+                                         <input type="hidden" name="menu" value="$search_column["menu"]" />
+                                         <input type="submit" value="提 交" />
+                                     </li>
+                                   </ul>
+                        </div> 
+                </form>
+</html>
