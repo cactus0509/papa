@@ -4,11 +4,39 @@ from __builtin__ import True
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+from threading import Thread
 import re 
 from bs4 import BeautifulSoup  
 from bs4.element import NavigableString,Tag
 import requests
+from pages import PAPA
 
+class Job(Thread): 
+    result = []
+    
+    def __init__(self,  pageInfo,args):  
+        super(Job, self).__init__()
+        self.pageInfo =pageInfo
+        self.args = args
+        
+    def run(self):  
+        try: 
+            info = self.pageInfo.parsePageInfo() 
+            papa = PAPA(
+                            split_page_url = self.args["split_page_url"],   
+                            parent_tag = info["parent_tag"], 
+                            parent_tag_seq = info["parent_tag_seq"],#1,
+                            dest_tag = info["dest_tag"], 
+                            detail_href_index = info["detail_href_index"],
+                            pages = int(self.args["pages"]),
+                            job_name =self.args["job_name"] ,
+                            job_path = self.args["job_path"] 
+                        ) 
+            papa.run() 
+        except Exception,e:
+            print e 
+        
+      
 class PageInfo():
     
     def __init__(self,first_page_url,first_title,first_link_title):
@@ -23,7 +51,7 @@ class PageInfo():
             resp=requests.get(self.first_page_url)
             print "response code :  %s " % ( resp.status_code ) 
             resp.encoding = 'utf-8'
-            text =  resp.text  
+            text =  resp.text   
             soup = BeautifulSoup(text, "lxml",fromEncoding="utf-8") 
             
             line_start=self.first_title   
@@ -44,7 +72,9 @@ class PageInfo():
                         for parent in  child.parents :
                             for tag in list_tags:  
                                 if parent.name == tag and  not bFind :    
-                                    for key in start_key_arr:   
+                                    for key in start_key_arr:  
+                                        key=key.decode('utf-8') 
+                                        print key 
                                         if parent.get_text().find(key)< 0   : 
                                             break 
                                         bFind=True
@@ -99,9 +129,9 @@ class PageInfo():
             
 if __name__ == "__main__":
     
-    first_page_url="https://www.guahao.com/search/expert?iSq=1&standardDepartmentId=7f67f180-cff3-11e1-831f-5cf9dd2e7135&standardDepartmentName=%E5%A6%87%E4%BA%A7%E7%A7%91&consult=2&p=%E5%85%A8%E5%9B%BD&fg=1&sort=0"
-    first_title="冯忻"
-    first_link_title="冯忻"
+    first_page_url="https://www.guahao.com/hospital/areahospitals?sort=region_sort&ipIsShanghai=false&fg=0&c=%E5%B9%BF%E5%B7%9E&ht=all&q=&p=%E5%B9%BF%E4%B8%9C&ci=79&hk=&o=all&pi=29&hl=all&pageNo=2"
+    first_title="广州医科大学附属第三医院"
+    first_link_title="广州医科大学附属第三医院"
     pageInfo =PageInfo(first_page_url, first_title,first_link_title  )
     info = pageInfo.parsePageInfo()
         

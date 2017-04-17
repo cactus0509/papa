@@ -80,14 +80,11 @@ class PAPA():
         
          
         assert "job_name" in kwargs 
-        self.job_name =kwargs["job_name"] 
+        self.job_name =kwargs["job_name"]  
         
-        from Config import DOWNLOAD
-        import time
-        now = time.strftime("%Y%m%d%H%M%S", time.localtime())
-        self.server_scrapy_dir=DOWNLOAD.PATH_DOWNLOAD 
-        self.job_path = "%s/%s_%s"% (self.server_scrapy_dir, self.job_name,now)
-
+        assert "job_path" in kwargs 
+        self.job_path =kwargs["job_path"]   
+        
         try:
             import os  
             if not os.path.exists( self.job_path  ):

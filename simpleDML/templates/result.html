@@ -1,0 +1,64 @@
+$def with (data)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <title> 
+        </title>   
+        <link rel="stylesheet" type="text/css" href="/static/css/default.css"> 
+        <script src="/static/js/jquery-1.8.0.min.js"></script>
+        
+       <script type="text/javascript">
+        function refresh() {   
+              url = '/result?job_path=$data["job_path"]'  ;  
+        	  jQuery.getJSON(url , function(result){
+        		  jQuery("div").html(result);
+        		  var tbodyDate = jQuery('#tbodyDate');
+        		  tbodyDate.empty(); 
+        		   for (var i = 0; i < result.length; i++) { 
+                      tbodyDate.append( 
+                          jQuery('<tr><td>' + result[i].page + '</td>' + '<td>' + result[i].count + '</td></tr>') 
+                          );
+                   } 
+              });         
+        }; 
+        
+        setInterval(refresh,100); 
+   </script>
+   
+   
+    </head>
+ <body>
+ <ul>
+ <li>
+ 	$data["job_name"] , $data["pages"] ,  $data["job_path"] 
+ </li>
+ <li>
+    结果
+ </li>
+ </ul>
+ <div>
+  123
+ </div>
+ 
+ 
+  <table border="1" cellspacing="2" cellpadding="1" style="margin-left:30px;" >
+             <thead>
+                 <tr>
+                       <th>
+                         Pages 
+                       </th> 
+                       <th>
+                         Count 
+                       </th> 
+                  </tr>
+              </thead>
+              <tbody id ="tbodyDate">
+              
+              </tbody>
+          </table>
+          
+          
+ </body> 
+ 
+</html>
